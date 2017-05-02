@@ -1,0 +1,9 @@
+node_modules/
+.eslintrc
+.env
+.babelrc
+.languagebabel
+.vscode/
+public/css/main.js
+npm-debug.log
+
