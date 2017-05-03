@@ -107,7 +107,7 @@
 	        _this.router = _this.router.bind(_this);
 	        _this.ajax = _this.ajax.bind(_this);
 	        _this.parseAuth = _this.parseAuth.bind(_this);
-	        var auth = { _id: false, error: null };
+	        var auth = { _id: false, error: '' };
 	        _this.state = { auth: auth };
 	        return _this;
 	    }
@@ -212,7 +212,11 @@
 	                switch (route) {
 	                    case 'signup':
 	                        console.log('signup .then');
+	                        // if (results.user.error !== '') {
+	                        //     reroute = 'signup';
+	                        // } else {
 	                        reroute = 'user';
+	                        // }
 	                        auth = _this2.parseAuth(results.user);
 	                        // console.log(auth);
 	                        break;
@@ -225,21 +229,26 @@
 	                        break;
 	                    case 'login':
 	                        console.log('login .then');
+	                        // if (results.user.error !== '') {
+	                        //     reroute = 'login';
+	                        // } else {
 	                        reroute = 'user';
+	                        // }
 	                        auth = _this2.parseAuth(results.user);
-	                    // console.log(auth);
+	                        // console.log(auth);
+	                        break;
 	                    case 'logout':
 	                        console.log('logout .then');
 	                        reroute = 'start';
 	                        auth = _this2.parseAuth(results.user);
-	                    // console.log(auth);
+	                        // console.log(auth);
+	                        break;
 	                }
-	                // console.log('reroute..........');
-	                // console.log(reroute);
+	                console.log('reroute..........');
+	                console.log(reroute);
 
 	                state.route = reroute;
 	                state.auth = auth;
-	                // state.books = books;
 
 	                if (reroute !== undefined) {
 	                    _this2.setState(state);
@@ -263,13 +272,14 @@
 	        value: function parseAuth(data) {
 	            console.log('parseAuth');
 	            console.log(data);
-	            // console.log(Object.keys(data));
+	            console.log(Object.keys(data));
 	            if (data._id === false) {
 	                return data;
 	            } else {
 
 	                var auth, type, error, obj, id, name, email, city, state;
 	                Object.keys(data).forEach(function (key) {
+	                    console.log(key);
 	                    switch (key) {
 	                        case 'local':
 	                            type = 'local';
@@ -287,9 +297,9 @@
 	                            break;
 	                    }
 	                });
-	                // console.log('type');
-	                // console.log(type);
-	                // console.log(data[type]);
+	                console.log('type');
+	                console.log(type);
+	                console.log(data[type]);
 	                data._id ? id = data._id : id = false;
 	                data.name ? name = data.name : name = '';
 	                data.city ? city = data.city : city = '';
@@ -334,11 +344,11 @@
 	                url: apiUrl,
 	                method: 'GET'
 	            }).then(function (data) {
-	                // console.log('comp will mount ajax.then');
-	                // console.log(data);
+	                console.log('comp will mount ajax.then');
+	                console.log(data);
 	                var route,
-	                    auth = _this3.parseAuth(data);
-	                // console.log(auth._id);
+	                    auth = _this3.parseAuth(data.user);
+	                console.log(auth._id);
 	                auth._id ? route = 'user' : route = 'start';
 	                _this3.setState({ route: route, auth: auth });
 	            });
@@ -346,14 +356,14 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            // console.log('Main render');
-	            // console.log(this.state);
+	            console.log('Main render');
+	            console.log(this.state);
 	            var page, error, route;
 	            route = this.state.route;
-	            // error = this.state.auth.error;
-	            // if (error) {
-	            //     route = error.type;
-	            // }
+	            error = this.state.auth.error;
+	            if (error) {
+	                route = error.type;
+	            }
 	            switch (route) {
 	                case 'start':
 	                    page = React.createElement(_start2.default, null);
@@ -5108,6 +5118,30 @@
 	                        { type: 'submit', className: 'btn btn-primary' },
 	                        'Submit'
 	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'page-header' },
+	                    _react2.default.createElement(
+	                        'h2',
+	                        null,
+	                        'Social'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: '/auth/twitter' },
+	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Twitter.png' })
+	                ),
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: '/auth/google' },
+	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Google+.png' })
+	                ),
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: '/auth/facebook' },
+	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Facebook.png' })
 	                )
 	            );
 	        }
@@ -5182,8 +5216,8 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            // console.log('Signup');
-	            // console.log(this.props);
+	            console.log('Signup');
+	            console.log(this.props);
 	            var error;
 	            if (this.props.auth.error === null) {
 	                error = null;

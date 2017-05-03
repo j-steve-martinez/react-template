@@ -30,8 +30,8 @@ export default class Signup extends React.Component {
 
     }
     render() {
-        // console.log('Signup');
-        // console.log(this.props);
+        console.log('Signup');
+        console.log(this.props);
         var error;
         if (this.props.auth.error === null) {
             error = null;

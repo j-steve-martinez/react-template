@@ -52,6 +52,19 @@ export default class Login extends React.Component {
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
+                <div className='page-header' >
+                    <h2>Social</h2>
+                </div>
+
+                <a href='/auth/twitter'>
+                    <img className='social-icon' src='./public/img/Twitter.png' />
+                </a>
+                <a href='/auth/google'>
+                    <img className='social-icon' src='./public/img/Google+.png' />
+                </a>
+                <a href='/auth/facebook'>
+                    <img className='social-icon' src='./public/img/Facebook.png' />
+                </a>
             </div>
         )
     }

@@ -7,6 +7,10 @@ a {
 .jumbotron {
   background: #99ccff; }
 
+.social-icon {
+  width: 64px;
+  height: 64px; }
+
 #about-body {
   font-size: 21px; }
 

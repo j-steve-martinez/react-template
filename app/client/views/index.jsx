@@ -22,7 +22,7 @@ export default class Main extends React.Component {
         this.router = this.router.bind(this);
         this.ajax = this.ajax.bind(this);
         this.parseAuth = this.parseAuth.bind(this);
-        var auth = { _id: false, error: null };
+        var auth = { _id: false, error: '' };
         this.state = { auth: auth };
     }
     router(route) {
@@ -110,7 +110,11 @@ export default class Main extends React.Component {
                 switch (route) {
                     case 'signup':
                         console.log('signup .then');
-                        reroute = 'user';
+                        // if (results.user.error !== '') {
+                        //     reroute = 'signup';
+                        // } else {
+                            reroute = 'user';
+                        // }
                         auth = this.parseAuth(results.user);
                         // console.log(auth);
                         break;
@@ -123,21 +127,26 @@ export default class Main extends React.Component {
                         break;
                     case 'login':
                         console.log('login .then');
-                        reroute = 'user';
+                        // if (results.user.error !== '') {
+                        //     reroute = 'login';
+                        // } else {
+                            reroute = 'user';
+                        // }
                         auth = this.parseAuth(results.user);
-                    // console.log(auth);
+                        // console.log(auth);
+                        break;
                     case 'logout':
                         console.log('logout .then');
                         reroute = 'start';
                         auth = this.parseAuth(results.user);
-                    // console.log(auth);
+                        // console.log(auth);
+                        break;
                 }
-                // console.log('reroute..........');
-                // console.log(reroute);
+                console.log('reroute..........');
+                console.log(reroute);
 
                 state.route = reroute;
                 state.auth = auth;
-                // state.books = books;
 
                 if (reroute !== undefined) {
                     this.setState(state);
@@ -160,13 +169,14 @@ export default class Main extends React.Component {
     parseAuth(data) {
         console.log('parseAuth');
         console.log(data);
-        // console.log(Object.keys(data));
+        console.log(Object.keys(data));
         if (data._id === false) {
             return data;
         } else {
 
             var auth, type, error, obj, id, name, email, city, state;
             Object.keys(data).forEach(key => {
+                console.log(key);
                 switch (key) {
                     case 'local':
                         type = 'local'
@@ -184,9 +194,9 @@ export default class Main extends React.Component {
                         break;
                 }
             });
-            // console.log('type');
-            // console.log(type);
-            // console.log(data[type]);
+            console.log('type');
+            console.log(type);
+            console.log(data[type]);
             data._id ? id = data._id : id = false;
             data.name ? name = data.name : name = '';
             data.city ? city = data.city : city = '';
@@ -225,23 +235,23 @@ export default class Main extends React.Component {
             url: apiUrl,
             method: 'GET'
         }).then(data => {
-            // console.log('comp will mount ajax.then');
-            // console.log(data);
-            var route, auth = this.parseAuth(data);
-            // console.log(auth._id);
+            console.log('comp will mount ajax.then');
+            console.log(data);
+            var route, auth = this.parseAuth(data.user);
+            console.log(auth._id);
             auth._id ? route = 'user' : route = 'start'
             this.setState({ route: route, auth: auth })
         })
     }
     render() {
-        // console.log('Main render');
-        // console.log(this.state);
+        console.log('Main render');
+        console.log(this.state);
         var page, error, route;
         route = this.state.route;
-        // error = this.state.auth.error;
-        // if (error) {
-        //     route = error.type;
-        // }
+        error = this.state.auth.error;
+        if (error) {
+            route = error.type;
+        }
         switch (route) {
             case 'start':
                 page = <Start />

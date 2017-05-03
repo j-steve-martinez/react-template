@@ -3,6 +3,8 @@
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 var index = path + '/public/index.html';
+var unAuth = { user: { _id: false } };
+var data = {};
 
 module.exports = function (app, passport, primus) {
 
@@ -16,7 +18,7 @@ module.exports = function (app, passport, primus) {
 		} else {
 			console.log('isAuthenticated false');
 			console.log(req.url);
-			res.json({ _id: false });
+			res.json({ user: { _id: false } });
 		}
 	}
 
@@ -30,12 +32,17 @@ module.exports = function (app, passport, primus) {
 
 
 	app.post('/signup', (req, res, next) => {
-		console.log('i am in /signup');
-		passport.authenticate('local-signup', function (err, user) {
+		passport.authenticate('local-signup', function (err, user, text) {
 			console.log('/signup');
 			console.log(user);
+			console.log(text);
 			if (err) { return next(err); }
-			if (!user) { return res.status(401).send({ error: { type: 'signup', message: "Email already in use!" } }); }
+			if (!user) {
+				data = unAuth;
+				data.user.error = { type: 'signup', message: text.message }
+				console.log(data);
+				return res.json(data);
+			}
 			req.logIn(user, function (err) {
 				if (err) { return res.status(401).send({ ok: err }); }
 				return res.send({ user });
@@ -46,11 +53,17 @@ module.exports = function (app, passport, primus) {
 
 	app.route('/login')
 		.post((req, res, next) => {
-			passport.authenticate('local-login', function (err, user) {
+			passport.authenticate('local-login', function (err, user, text) {
 				console.log('/login');
 				console.log(user);
+				console.log(text);
 				if (err) { return next(err); }
-				if (!user) { return res.status(401).send({ error: { type: 'login', message: "Email or Password not correct!" } }); }
+				if (!user) {
+					data = unAuth;
+					data.user.error = { type: 'login', message: text.message }
+					console.log(data);
+					return res.json(data);
+				}
 				req.logIn(user, function (err) {
 					if (err) { return res.status(401).send({ ok: err }); }
 					// return res.send({ "ok": true });
@@ -68,15 +81,19 @@ module.exports = function (app, passport, primus) {
 			console.log('/logout req.session');
 			req.logout();
 			console.log(req.session);
-
 			res.json({ user: { _id: false } });
-
 		});
 
 	// get user info
 	app.route('/user/:id')
 		.get(isLoggedIn, function (req, res) {
-			res.json(req.user)
+			console.log('is this ever called /user/:id ?');
+			// console.log(req.user);
+			var user = req.user;
+			var data = {user: user};
+			console.log(data);
+			// res.json({user: {user}});
+			res.json(data);
 		});
 
 	app.route('/auth/github')
@@ -138,6 +155,39 @@ module.exports = function (app, passport, primus) {
 		user.google.token = undefined;
 		user.save(function (err) {
 			res.redirect('/');
+		});
+	});
+
+
+	primus.on('connection', function connection(spark) {
+		// console.log('new connection ' + spark.id);
+		// primus.write('data');
+
+		/**
+		 * Wait for all data to be received from the client
+		 */
+		spark.on('data', function received(data) {
+			var sourceId = spark.id;
+			// console.log('source id');
+			// console.log(sourceId);
+			if (typeof data === 'object') {
+				// console.log(spark.id, 'received data:');
+				// console.log(typeof data);
+				// console.log(data);
+				/**
+				 * Send the message to all clients
+				 */
+				primus.forEach(function (spark, id, connections) {
+
+					if (sourceId !== spark.id && typeof data !== 'string') {
+						// console.log('sending to ' + spark.id + ' this data:');
+						// console.log(data);
+
+						spark.write(data);
+					}
+
+				});
+			}
 		});
 	});
 
