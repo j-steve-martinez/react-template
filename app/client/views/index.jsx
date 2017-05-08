@@ -1,10 +1,5 @@
 'use strict'
 
-/**
- * TODO: fix empty password on the back end
- * if it is blank don't save it.
- */
-
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -26,20 +21,9 @@ export default class Main extends React.Component {
         this.state = { auth: auth };
     }
     router(route) {
-        console.log('main router');
-        console.log(route);
-        /**
-         * Routes:
-         *  login
-         *  signup
-         *  user
-         *  config
-         *  logout
-         */
+        // console.log('main router');
+        // console.log(route);
         if (route === 'logout') {
-            console.log('logging out');
-            // var auth = { _id: false, error: null };
-            // this.setState({ route: 'start', auth: auth });
             this.ajax({ route: 'logout' });
         } else {
             var auth = this.state.auth;
@@ -94,57 +78,41 @@ export default class Main extends React.Component {
         header.contentType = "application/json";
         header.dataType = 'json'
         header.data = JSON.stringify(data);
-        console.log('ajax header');
-        console.log(header);
+        // console.log('ajax header');
+        // console.log(data);
+        // console.log(header);
 
         /**
          * Get data from server
          */
         $.ajax(header)
             .then(results => {
-                console.log('AJAX .then');
-                console.log(results);
-                console.log(route);
-                // console.log(results.user.email);
-                // console.log(results.user.password);
+                // console.log('AJAX .then');
+                // console.log(results);
                 switch (route) {
                     case 'signup':
-                        console.log('signup .then');
-                        // if (results.user.error !== '') {
-                        //     reroute = 'signup';
-                        // } else {
-                            reroute = 'user';
-                        // }
+                        // console.log('signup .then');
+                        reroute = 'user';
                         auth = this.parseAuth(results.user);
-                        // console.log(auth);
                         break;
                     case 'update':
-                        console.log('update .then');
+                        // console.log('update .then');
                         reroute = 'user';
-                        // console.log(results.user);
                         auth = this.parseAuth(results.user);
-                        // console.log(auth);
                         break;
                     case 'login':
-                        console.log('login .then');
-                        // if (results.user.error !== '') {
-                        //     reroute = 'login';
-                        // } else {
-                            reroute = 'user';
-                        // }
+                        // console.log('login .then');
+                        reroute = 'user';
                         auth = this.parseAuth(results.user);
-                        // console.log(auth);
                         break;
                     case 'logout':
-                        console.log('logout .then');
+                        // console.log('logout .then');
                         reroute = 'start';
                         auth = this.parseAuth(results.user);
-                        // console.log(auth);
                         break;
                 }
-                console.log('reroute..........');
-                console.log(reroute);
-
+                // console.log('reroute..........');
+                // console.log(reroute);
                 state.route = reroute;
                 state.auth = auth;
 
@@ -153,30 +121,27 @@ export default class Main extends React.Component {
                 }
             })
             .fail(err => {
-                console.log('AJAX .fail');
-                console.log(err);
+                // console.log('AJAX .fail');
+                // console.log(err);
                 var auth = this.state.auth;
                 if (err.responseJSON) {
                     auth.error = err.responseJSON.error;
                     this.setState({ route: route, auth: auth });
                 } else {
-                    console.log('An unknown server error occured occured!');
-                    // alert('An unknown server error occured occured!');
                     this.setState({ route: 'start' });
                 }
             });
     }
     parseAuth(data) {
-        console.log('parseAuth');
-        console.log(data);
-        console.log(Object.keys(data));
+        // console.log('parseAuth');
+        // console.log(data);
         if (data._id === false) {
             return data;
         } else {
 
             var auth, type, error, obj, id, name, email, city, state;
             Object.keys(data).forEach(key => {
-                console.log(key);
+                // console.log(key);
                 switch (key) {
                     case 'local':
                         type = 'local'
@@ -194,24 +159,27 @@ export default class Main extends React.Component {
                         break;
                 }
             });
-            console.log('type');
-            console.log(type);
-            console.log(data[type]);
+            // console.log('type');
+            // console.log(type);
+            // console.log(data[type]);
             data._id ? id = data._id : id = false;
-            data.name ? name = data.name : name = '';
-            data.city ? city = data.city : city = '';
-            data.state ? state = data.state : state = '';
+            data[type].name ? name = data[type].name : name = '';
+            data[type].city ? city = data[type].city : city = '';
+            data[type].state ? state = data[type].state : state = '';
             data[type].email ? email = data[type].email : email = '';
             data.error ? error = data.error : error = null;
 
             obj = {
                 _id: id,
+                type, type,
                 name: name,
                 email: email,
                 city: city,
                 state: state,
                 error: error
             }
+            // console.log('return');
+            // console.log(obj);
             return obj;
         }
     }
@@ -235,17 +203,17 @@ export default class Main extends React.Component {
             url: apiUrl,
             method: 'GET'
         }).then(data => {
-            console.log('comp will mount ajax.then');
-            console.log(data);
+            // console.log('comp will mount ajax.then');
+            // console.log(data);
             var route, auth = this.parseAuth(data.user);
-            console.log(auth._id);
+            // console.log(auth._id);
             auth._id ? route = 'user' : route = 'start'
             this.setState({ route: route, auth: auth })
         })
     }
     render() {
-        console.log('Main render');
-        console.log(this.state);
+        // console.log('Main render');
+        // console.log(this.state);
         var page, error, route;
         route = this.state.route;
         error = this.state.auth.error;
@@ -272,7 +240,7 @@ export default class Main extends React.Component {
                 page = <About />
                 break;
             default:
-                console.log('showing default blank page');
+                // console.log('showing default blank page');
                 page = null
                 break;
         }

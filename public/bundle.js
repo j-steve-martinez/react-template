@@ -46,11 +46,6 @@
 
 	'use strict';
 
-	/**
-	 * TODO: fix empty password on the back end
-	 * if it is blank don't save it.
-	 */
-
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
@@ -87,6 +82,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -115,20 +112,9 @@
 	    _createClass(Main, [{
 	        key: 'router',
 	        value: function router(route) {
-	            console.log('main router');
-	            console.log(route);
-	            /**
-	             * Routes:
-	             *  login
-	             *  signup
-	             *  user
-	             *  config
-	             *  logout
-	             */
+	            // console.log('main router');
+	            // console.log(route);
 	            if (route === 'logout') {
-	                console.log('logging out');
-	                // var auth = { _id: false, error: null };
-	                // this.setState({ route: 'start', auth: auth });
 	                this.ajax({ route: 'logout' });
 	            } else {
 	                var auth = this.state.auth;
@@ -197,56 +183,40 @@
 	            header.contentType = "application/json";
 	            header.dataType = 'json';
 	            header.data = JSON.stringify(data);
-	            console.log('ajax header');
-	            console.log(header);
+	            // console.log('ajax header');
+	            // console.log(data);
+	            // console.log(header);
 
 	            /**
 	             * Get data from server
 	             */
 	            $.ajax(header).then(function (results) {
-	                console.log('AJAX .then');
-	                console.log(results);
-	                console.log(route);
-	                // console.log(results.user.email);
-	                // console.log(results.user.password);
+	                // console.log('AJAX .then');
+	                // console.log(results);
 	                switch (route) {
 	                    case 'signup':
-	                        console.log('signup .then');
-	                        // if (results.user.error !== '') {
-	                        //     reroute = 'signup';
-	                        // } else {
+	                        // console.log('signup .then');
 	                        reroute = 'user';
-	                        // }
 	                        auth = _this2.parseAuth(results.user);
-	                        // console.log(auth);
 	                        break;
 	                    case 'update':
-	                        console.log('update .then');
+	                        // console.log('update .then');
 	                        reroute = 'user';
-	                        // console.log(results.user);
 	                        auth = _this2.parseAuth(results.user);
-	                        // console.log(auth);
 	                        break;
 	                    case 'login':
-	                        console.log('login .then');
-	                        // if (results.user.error !== '') {
-	                        //     reroute = 'login';
-	                        // } else {
+	                        // console.log('login .then');
 	                        reroute = 'user';
-	                        // }
 	                        auth = _this2.parseAuth(results.user);
-	                        // console.log(auth);
 	                        break;
 	                    case 'logout':
-	                        console.log('logout .then');
+	                        // console.log('logout .then');
 	                        reroute = 'start';
 	                        auth = _this2.parseAuth(results.user);
-	                        // console.log(auth);
 	                        break;
 	                }
-	                console.log('reroute..........');
-	                console.log(reroute);
-
+	                // console.log('reroute..........');
+	                // console.log(reroute);
 	                state.route = reroute;
 	                state.auth = auth;
 
@@ -254,15 +224,13 @@
 	                    _this2.setState(state);
 	                }
 	            }).fail(function (err) {
-	                console.log('AJAX .fail');
-	                console.log(err);
+	                // console.log('AJAX .fail');
+	                // console.log(err);
 	                var auth = _this2.state.auth;
 	                if (err.responseJSON) {
 	                    auth.error = err.responseJSON.error;
 	                    _this2.setState({ route: route, auth: auth });
 	                } else {
-	                    console.log('An unknown server error occured occured!');
-	                    // alert('An unknown server error occured occured!');
 	                    _this2.setState({ route: 'start' });
 	                }
 	            });
@@ -270,16 +238,16 @@
 	    }, {
 	        key: 'parseAuth',
 	        value: function parseAuth(data) {
-	            console.log('parseAuth');
-	            console.log(data);
-	            console.log(Object.keys(data));
+	            // console.log('parseAuth');
+	            // console.log(data);
 	            if (data._id === false) {
 	                return data;
 	            } else {
+	                var _obj;
 
 	                var auth, type, error, obj, id, name, email, city, state;
 	                Object.keys(data).forEach(function (key) {
-	                    console.log(key);
+	                    // console.log(key);
 	                    switch (key) {
 	                        case 'local':
 	                            type = 'local';
@@ -297,24 +265,21 @@
 	                            break;
 	                    }
 	                });
-	                console.log('type');
-	                console.log(type);
-	                console.log(data[type]);
+	                // console.log('type');
+	                // console.log(type);
+	                // console.log(data[type]);
 	                data._id ? id = data._id : id = false;
-	                data.name ? name = data.name : name = '';
-	                data.city ? city = data.city : city = '';
-	                data.state ? state = data.state : state = '';
+	                data[type].name ? name = data[type].name : name = '';
+	                data[type].city ? city = data[type].city : city = '';
+	                data[type].state ? state = data[type].state : state = '';
 	                data[type].email ? email = data[type].email : email = '';
 	                data.error ? error = data.error : error = null;
 
-	                obj = {
+	                obj = (_obj = {
 	                    _id: id,
-	                    name: name,
-	                    email: email,
-	                    city: city,
-	                    state: state,
-	                    error: error
-	                };
+	                    type: type }, _defineProperty(_obj, 'type', type), _defineProperty(_obj, 'name', name), _defineProperty(_obj, 'email', email), _defineProperty(_obj, 'city', city), _defineProperty(_obj, 'state', state), _defineProperty(_obj, 'error', error), _obj);
+	                // console.log('return');
+	                // console.log(obj);
 	                return obj;
 	            }
 	        }
@@ -344,11 +309,11 @@
 	                url: apiUrl,
 	                method: 'GET'
 	            }).then(function (data) {
-	                console.log('comp will mount ajax.then');
-	                console.log(data);
+	                // console.log('comp will mount ajax.then');
+	                // console.log(data);
 	                var route,
 	                    auth = _this3.parseAuth(data.user);
-	                console.log(auth._id);
+	                // console.log(auth._id);
 	                auth._id ? route = 'user' : route = 'start';
 	                _this3.setState({ route: route, auth: auth });
 	            });
@@ -356,8 +321,8 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            console.log('Main render');
-	            console.log(this.state);
+	            // console.log('Main render');
+	            // console.log(this.state);
 	            var page, error, route;
 	            route = this.state.route;
 	            error = this.state.auth.error;
@@ -384,7 +349,7 @@
 	                    page = React.createElement(_about2.default, null);
 	                    break;
 	                default:
-	                    console.log('showing default blank page');
+	                    // console.log('showing default blank page');
 	                    page = null;
 	                    break;
 	            }
@@ -443,7 +408,7 @@
 	    value: function render() {
 	      var fccProjectURL, fccProjectName, appName, herokuURL, githubURL;
 	      fccProjectName = 'React Login Template';
-	      fccProjectURL = "https://www.freecodecamp.com/challenges/react-template";
+	      fccProjectURL = "#";
 	      appName = 'React Login Template';
 	      herokuURL = "#";
 	      githubURL = "https://github.com/j-steve-martinez/react-template";
@@ -463,22 +428,6 @@
 	        _react2.default.createElement(
 	          'div',
 	          { id: 'about-body' },
-	          'This site is for the ',
-	          _react2.default.createElement(
-	            'a',
-	            { href: 'https://www.freecodecamp.com', target: '_blank' },
-	            'freeCodeCamp '
-	          ),
-	          'Dynamic Web Applications Project:',
-	          _react2.default.createElement(
-	            'a',
-	            { href: fccProjectURL, target: '_blank' },
-	            ' ',
-	            fccProjectName
-	          ),
-	          '.',
-	          _react2.default.createElement('br', null),
-	          _react2.default.createElement('br', null),
 	          'It is a full stack web application that uses:',
 	          _react2.default.createElement(
 	            'ul',
@@ -536,20 +485,6 @@
 	              'a',
 	              { className: 'link', href: 'https://github.com/j-steve-martinez', target: '_blank' },
 	              'J. Steve Martinez'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'span',
-	            null,
-	            ' | '
-	          ),
-	          _react2.default.createElement(
-	            'span',
-	            null,
-	            _react2.default.createElement(
-	              'a',
-	              { className: 'link', href: herokuURL, target: '_blank' },
-	              'Heroku'
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -4677,42 +4612,59 @@
 	            // console.log(e.target.elements.email.value);
 	            // console.log(e.target.elements.city.value);
 	            // console.log(e.target.elements.state.value);
-	            var data, id, name, email, city, state, password, confirm;
+	            var data, id, name, email, city, state, password, confirm, type;
 	            id = this.props.auth._id;
+	            type = this.props.auth.type;
 	            name = e.target.elements.name.value;
 	            email = e.target.elements.email.value;
 	            city = e.target.elements.city.value;
 	            state = e.target.elements.state.value;
-	            password = e.target.elements.password.value;
-	            confirm = e.target.elements.confirm.value;
 
-	            if (password === confirm) {
-
+	            if (type !== 'local') {
 	                data = {
 	                    route: 'update',
+	                    type: type,
 	                    id: id,
 	                    name: name,
 	                    email: email,
 	                    city: city,
-	                    state: state,
-	                    password: password
+	                    state: state
 	                };
-
-	                // console.log(data);
 	                this.props.ajax(data);
 	            } else {
-	                var findPos = function findPos(obj) {
-	                    var curtop = 0;
-	                    if (obj.offsetParent) {
-	                        do {
-	                            curtop += obj.offsetTop;
-	                        } while (obj = obj.offsetParent);
-	                        return [curtop];
-	                    }
-	                };
 
-	                window.scrollTo(0, findPos(document.getElementById("error")));
-	                this.setState({ message: 'The passwords don\'t match!' });
+	                password = e.target.elements.password.value;
+	                confirm = e.target.elements.confirm.value;
+
+	                if (password === confirm) {
+
+	                    data = {
+	                        route: 'update',
+	                        type: type,
+	                        id: id,
+	                        name: name,
+	                        email: email,
+	                        city: city,
+	                        state: state,
+	                        password: password
+	                    };
+
+	                    // console.log(data);
+	                    this.props.ajax(data);
+	                } else {
+	                    var findPos = function findPos(obj) {
+	                        var curtop = 0;
+	                        if (obj.offsetParent) {
+	                            do {
+	                                curtop += obj.offsetTop;
+	                            } while (obj = obj.offsetParent);
+	                            return [curtop];
+	                        }
+	                    };
+
+	                    window.scrollTo(0, findPos(document.getElementById("error")));
+	                    this.setState({ message: 'The passwords don\'t match!' });
+	                }
 	            }
 	        }
 	    }, {
@@ -4720,11 +4672,40 @@
 	        value: function render() {
 	            // console.log('Config');
 	            // console.log(this.props);
-	            var name, email, city, state;
+	            var type, name, email, city, state, pass;
+	            type = this.props.auth.type;
 	            name = this.props.auth.name;
 	            email = this.props.auth.email;
 	            city = this.props.auth.city;
 	            state = this.props.auth.state;
+	            if (type === 'local') {
+	                pass = _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'password' },
+	                            'Password:'
+	                        ),
+	                        _react2.default.createElement('input', { type: 'password', className: 'form-control', id: 'password' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'confirm' },
+	                            'Confirm:'
+	                        ),
+	                        _react2.default.createElement('input', { type: 'password', className: 'form-control', id: 'confirm' })
+	                    )
+	                );
+	            } else {
+	                pass = null;
+	            }
 
 	            return _react2.default.createElement(
 	                'div',
@@ -4790,26 +4771,7 @@
 	                        ),
 	                        _react2.default.createElement('input', { type: 'text', className: 'form-control', id: 'state', defaultValue: state })
 	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'password' },
-	                            'Password:'
-	                        ),
-	                        _react2.default.createElement('input', { type: 'password', className: 'form-control', id: 'password' })
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'confirm' },
-	                            'Confirm:'
-	                        ),
-	                        _react2.default.createElement('input', { type: 'password', className: 'form-control', id: 'confirm' })
-	                    ),
+	                    pass,
 	                    _react2.default.createElement(
 	                        'button',
 	                        { type: 'submit', className: 'btn btn-primary' },
@@ -5436,7 +5398,7 @@
 /* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -5475,10 +5437,10 @@
 	    }
 
 	    _createClass(User, [{
-	        key: 'onClick',
+	        key: "onClick",
 	        value: function onClick(e) {
-	            console.log('onClick');
-	            console.log(e.target.id);
+	            // console.log('onClick');
+	            // console.log(e.target.id);
 	            e.preventDefault();
 
 	            var data = {
@@ -5498,27 +5460,27 @@
 	            this.setState(data);
 	        }
 	    }, {
-	        key: 'onSubmit',
+	        key: "onSubmit",
 	        value: function onSubmit(e) {
 	            e.preventDefault();
-	            console.log('onSubmit');
-	            console.log(e.target.id);
+	            // console.log('onSubmit');
+	            // console.log(e.target.id);
 	            // this.props.ajax(data);
 	        }
 	    }, {
-	        key: 'onConfirm',
+	        key: "onConfirm",
 	        value: function onConfirm(e) {
 	            e.preventDefault();
-	            console.log('onConfirm');
-	            console.log(e.target.id);
+	            // console.log('onConfirm');
+	            // console.log(e.target.id);
 	            this.setState({ isConfirm: false });
 	        }
 	    }, {
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
-	            console.log('User');
-	            console.log(this.props);
-	            console.log(this.state);
+	            // console.log('User');
+	            // console.log(this.props);
+	            // console.log(this.state);
 	            var books, booksHtml, borrowed, borrowedHtml, requests, requestsHtml, name, email, city, state;
 
 	            /**
@@ -5527,35 +5489,35 @@
 	            if (this.state.isConfirm) {
 	                if (this.state.book.isAccept === true || this.state.book.isRequest) {
 	                    confirm = _react2.default.createElement(
-	                        'div',
-	                        { className: 'alert alert-danger alert-dismissible', role: 'alert' },
+	                        "div",
+	                        { className: "alert alert-danger alert-dismissible", role: "alert" },
 	                        _react2.default.createElement(
-	                            'strong',
+	                            "strong",
 	                            null,
 	                            this.state.book.title
 	                        ),
-	                        ' has been requested or is on loan. Try again later.'
+	                        " has been requested or is on loan. Try again later."
 	                    );
 	                } else {
 	                    confirm = _react2.default.createElement(
-	                        'form',
-	                        { className: 'form-horizontal' },
+	                        "form",
+	                        { className: "form-horizontal" },
 	                        _react2.default.createElement(
-	                            'label',
-	                            { className: 'well text-danger' },
-	                            'Delete: ',
+	                            "label",
+	                            { className: "well text-danger" },
+	                            "Delete: ",
 	                            this.state.book.title,
-	                            '? '
+	                            "? "
 	                        ),
 	                        _react2.default.createElement(
-	                            'button',
-	                            { onClick: this.onConfirm, name: this.state.book._id, id: 'delete', className: 'btn btn-success btn-lg' },
-	                            'Delete'
+	                            "button",
+	                            { onClick: this.onConfirm, name: this.state.book._id, id: "delete", className: "btn btn-success btn-lg" },
+	                            "Delete"
 	                        ),
 	                        _react2.default.createElement(
-	                            'button',
-	                            { onClick: this.onConfirm, name: this.state.book._id, id: 'cancel', className: 'btn btn-danger btn-lg' },
-	                            'Cancel'
+	                            "button",
+	                            { onClick: this.onConfirm, name: this.state.book._id, id: "cancel", className: "btn btn-danger btn-lg" },
+	                            "Cancel"
 	                        )
 	                    );
 	                }
@@ -5578,25 +5540,25 @@
 	            }
 
 	            return _react2.default.createElement(
-	                'div',
-	                { className: 'jumbotron' },
+	                "div",
+	                { className: "jumbotron" },
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'page-header' },
+	                    "div",
+	                    { className: "page-header" },
 	                    _react2.default.createElement(
-	                        'h1',
+	                        "h1",
 	                        null,
 	                        email,
-	                        ' ',
+	                        " ",
 	                        _react2.default.createElement(
-	                            'small',
+	                            "small",
 	                            null,
 	                            name
 	                        )
 	                    )
 	                ),
 	                _react2.default.createElement(
-	                    'h3',
+	                    "h3",
 	                    null,
 	                    location
 	                )

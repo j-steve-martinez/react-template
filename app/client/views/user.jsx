@@ -12,8 +12,8 @@ export default class User extends React.Component {
         this.state = data;
     }
     onClick(e) {
-        console.log('onClick');
-        console.log(e.target.id);
+        // console.log('onClick');
+        // console.log(e.target.id);
         e.preventDefault();
 
         var data = {
@@ -34,21 +34,21 @@ export default class User extends React.Component {
     }
     onSubmit(e) {
         e.preventDefault();
-        console.log('onSubmit');
-        console.log(e.target.id);
+        // console.log('onSubmit');
+        // console.log(e.target.id);
         // this.props.ajax(data);
 
     }
     onConfirm(e) {
         e.preventDefault();
-        console.log('onConfirm');
-        console.log(e.target.id);
+        // console.log('onConfirm');
+        // console.log(e.target.id);
         this.setState({ isConfirm: false });
     }
     render() {
-        console.log('User');
-        console.log(this.props);
-        console.log(this.state);
+        // console.log('User');
+        // console.log(this.props);
+        // console.log(this.state);
         var books, booksHtml, borrowed, borrowedHtml, requests, requestsHtml, name, email, city, state;
 
         /**

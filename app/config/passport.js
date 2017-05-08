@@ -10,16 +10,16 @@ var configAuth = require('./auth');
 module.exports = function (passport) {
 
     passport.serializeUser(function (user, done) {
-        console.log('serializeUser');
-        console.log(user);
+        // console.log('serializeUser');
+        // console.log(user);
         done(null, user.id);
     });
 
 
     passport.deserializeUser(function (id, done) {
         User.findById(id, function (err, user) {
-            console.log('deserializeUser');
-            console.log(user);
+            // console.log('deserializeUser');
+            // console.log(user);
             done(err, user);
         });
     });
@@ -261,7 +261,8 @@ module.exports = function (passport) {
         function (req, token, tokenSecret, profile, done) {
 
             process.nextTick(function () {
-
+                console.log('twitter profile');
+                console.log(profile);
                 /**
                  * Check if logged in
                  */
@@ -279,8 +280,8 @@ module.exports = function (passport) {
                              */
                             if (!user.twitter.token) {
                                 user.twitter.token = token;
-                                user.twitter.username = profile.username;
-                                user.twitter.displayName = profile.displayName;
+                                user.twitter.email = profile.username;
+                                user.twitter.name = profile.displayName;
 
                                 user.save(function (err) {
                                     if (err) {
@@ -300,8 +301,8 @@ module.exports = function (passport) {
 
                             newUser.twitter.id = profile.id;
                             newUser.twitter.token = token;
-                            newUser.twitter.username = profile.username;
-                            newUser.twitter.displayName = profile.displayName;
+                            newUser.twitter.email = profile.username;
+                            newUser.twitter.name = profile.displayName;
 
                             newUser.save(function (err) {
                                 if (err) {
@@ -318,8 +319,8 @@ module.exports = function (passport) {
 
                     user.twitter.id = profile.id;
                     user.twitter.token = token;
-                    user.twitter.username = profile.username;
-                    user.twitter.displayName = profile.displayName;
+                    user.twitter.email = profile.username;
+                    user.twitter.name = profile.displayName;
 
                     user.save(function (err) {
                         if (err) {

@@ -13,11 +13,11 @@ module.exports = function (app, passport, primus) {
 		// console.log('req.session');
 		// console.log(req.session);
 		if (req.isAuthenticated()) {
-			console.log('isAuthenticated true');
+			// console.log('isAuthenticated true');
 			return next();
 		} else {
-			console.log('isAuthenticated false');
-			console.log(req.url);
+			// console.log('isAuthenticated false');
+			// console.log(req.url);
 			res.json({ user: { _id: false } });
 		}
 	}
@@ -33,14 +33,14 @@ module.exports = function (app, passport, primus) {
 
 	app.post('/signup', (req, res, next) => {
 		passport.authenticate('local-signup', function (err, user, text) {
-			console.log('/signup');
-			console.log(user);
-			console.log(text);
+			// console.log('/signup');
+			// console.log(user);
+			// console.log(text);
 			if (err) { return next(err); }
 			if (!user) {
 				data = unAuth;
 				data.user.error = { type: 'signup', message: text.message }
-				console.log(data);
+				// console.log(data);
 				return res.json(data);
 			}
 			req.logIn(user, function (err) {
@@ -54,14 +54,14 @@ module.exports = function (app, passport, primus) {
 	app.route('/login')
 		.post((req, res, next) => {
 			passport.authenticate('local-login', function (err, user, text) {
-				console.log('/login');
-				console.log(user);
-				console.log(text);
+				// console.log('/login');
+				// console.log(user);
+				// console.log(text);
 				if (err) { return next(err); }
 				if (!user) {
 					data = unAuth;
 					data.user.error = { type: 'login', message: text.message }
-					console.log(data);
+					// console.log(data);
 					return res.json(data);
 				}
 				req.logIn(user, function (err) {
@@ -78,20 +78,20 @@ module.exports = function (app, passport, primus) {
 
 	app.route('/logout')
 		.get(function (req, res) {
-			console.log('/logout req.session');
+			// console.log('/logout req.session');
 			req.logout();
-			console.log(req.session);
+			// console.log(req.session);
 			res.json({ user: { _id: false } });
 		});
 
 	// get user info
 	app.route('/user/:id')
 		.get(isLoggedIn, function (req, res) {
-			console.log('is this ever called /user/:id ?');
+			// console.log('is this ever called /user/:id ?');
 			// console.log(req.user);
 			var user = req.user;
 			var data = {user: user};
-			console.log(data);
+			// console.log(data);
 			// res.json({user: {user}});
 			res.json(data);
 		});
@@ -123,40 +123,40 @@ module.exports = function (app, passport, primus) {
 			failureRedirect: '/'
 		}));
 
-	app.get('/unlink/local', isLoggedIn, function (req, res) {
-		var user = req.user;
-		user.local.email = undefined;
-		user.local.password = undefined;
-		user.save(function (err) {
-			res.redirect('/');
-		});
-	});
+	// app.get('/unlink/local', isLoggedIn, function (req, res) {
+	// 	var user = req.user;
+	// 	user.local.email = undefined;
+	// 	user.local.password = undefined;
+	// 	user.save(function (err) {
+	// 		res.redirect('/');
+	// 	});
+	// });
 
-	app.get('/unlink/facebook', isLoggedIn, function (req, res) {
-		var user = req.user;
-		user.facebook.token = undefined;
-		user.save(function (err) {
-			res.redirect('/');
-		});
-	});
-
-
-	app.get('/unlink/twitter', isLoggedIn, function (req, res) {
-		var user = req.user;
-		user.twitter.token = undefined;
-		user.save(function (err) {
-			res.redirect('/');
-		});
-	});
+	// app.get('/unlink/facebook', isLoggedIn, function (req, res) {
+	// 	var user = req.user;
+	// 	user.facebook.token = undefined;
+	// 	user.save(function (err) {
+	// 		res.redirect('/');
+	// 	});
+	// });
 
 
-	app.get('/unlink/google', isLoggedIn, function (req, res) {
-		var user = req.user;
-		user.google.token = undefined;
-		user.save(function (err) {
-			res.redirect('/');
-		});
-	});
+	// app.get('/unlink/twitter', isLoggedIn, function (req, res) {
+	// 	var user = req.user;
+	// 	user.twitter.token = undefined;
+	// 	user.save(function (err) {
+	// 		res.redirect('/');
+	// 	});
+	// });
+
+
+	// app.get('/unlink/google', isLoggedIn, function (req, res) {
+	// 	var user = req.user;
+	// 	user.google.token = undefined;
+	// 	user.save(function (err) {
+	// 		res.redirect('/');
+	// 	});
+	// });
 
 
 	primus.on('connection', function connection(spark) {
@@ -190,12 +190,5 @@ module.exports = function (app, passport, primus) {
 			}
 		});
 	});
-
-	// app.route('/api/books')
-	// 	.get(isLoggedIn, clickHandler.getAllBooks)
-	// 	.post(isLoggedIn, clickHandler.addBook)
-	// 	.put(isLoggedIn, clickHandler.editBook)
-	// 	.delete(isLoggedIn, clickHandler.deleteBook)
-
 
 };

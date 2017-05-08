@@ -4,7 +4,7 @@ export default class About extends React.Component {
   render() {
     var fccProjectURL, fccProjectName, appName, herokuURL, githubURL;
     fccProjectName = 'React Login Template';
-    fccProjectURL = "https://www.freecodecamp.com/challenges/react-template";
+    fccProjectURL = "#";
     appName = 'React Login Template';
     herokuURL = "#";
     githubURL = "https://github.com/j-steve-martinez/react-template";
@@ -15,11 +15,6 @@ export default class About extends React.Component {
           <h1>{appName}</h1>
         </div>
         <div id='about-body' >
-          This site is for the <a href="https://www.freecodecamp.com" target="_blank">freeCodeCamp </a>
-          Dynamic Web Applications Project:
-          <a href={fccProjectURL} target="_blank"> {fccProjectName}</a>.
-          <br></br>
-          <br></br>
           It is a full stack web application that uses:
           <ul>
             <li>
@@ -43,12 +38,6 @@ export default class About extends React.Component {
           <span>
             <a className='link' href="https://github.com/j-steve-martinez" target="_blank">
               J. Steve Martinez
-            </a>
-          </span>
-          <span> | </span>
-          <span>
-            <a className='link' href={herokuURL} target="_blank">
-              Heroku
             </a>
           </span>
           <span> | </span>
