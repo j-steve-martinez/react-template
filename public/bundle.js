@@ -331,7 +331,7 @@
 	            }
 	            switch (route) {
 	                case 'start':
-	                    page = React.createElement(_start2.default, null);
+	                    page = React.createElement(_start2.default, { auth: this.state.auth });
 	                    break;
 	                case 'login':
 	                    page = React.createElement(_login2.default, { ajax: this.ajax, auth: this.state.auth });
@@ -4608,10 +4608,6 @@
 	            e.preventDefault();
 	            // console.log('Config submit');
 	            // console.log(e.target.elements);
-	            // console.log(e.target.elements.name.value);
-	            // console.log(e.target.elements.email.value);
-	            // console.log(e.target.elements.city.value);
-	            // console.log(e.target.elements.state.value);
 	            var data, id, name, email, city, state, password, confirm, type;
 	            id = this.props.auth._id;
 	            type = this.props.auth.type;
@@ -5305,8 +5301,18 @@
 	    _createClass(Start, [{
 	        key: 'render',
 	        value: function render() {
-	            // console.log('Start props');
-	            // console.log(this.props);
+	            console.log('Start props');
+	            console.log(this.props);
+	            var welcome, name;
+	            if (this.props.auth._id !== false) {
+	                this.props.auth.name ? name = this.props.auth.name : name = this.props.auth.email;
+	                welcome = 'Welcome Back';
+	                name = name;
+	            } else {
+	                welcome = "Welcome";
+	                name = "Please Login or Register.";
+	            }
+	            console.log(welcome);
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'jumbotron' },
@@ -5316,13 +5322,13 @@
 	                    _react2.default.createElement(
 	                        'h1',
 	                        null,
-	                        'Welcome'
+	                        welcome
+	                    ),
+	                    _react2.default.createElement(
+	                        'h2',
+	                        null,
+	                        name
 	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    'Please Login or Register.'
 	                ),
 	                _react2.default.createElement(
 	                    'h3',

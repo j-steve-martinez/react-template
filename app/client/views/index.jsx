@@ -222,7 +222,7 @@ export default class Main extends React.Component {
         }
         switch (route) {
             case 'start':
-                page = <Start />
+                page = <Start auth={this.state.auth} />
                 break;
             case 'login':
                 page = <Login ajax={this.ajax} auth={this.state.auth} />

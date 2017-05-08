@@ -10,10 +10,6 @@ export default class Config extends React.Component {
         e.preventDefault();
         // console.log('Config submit');
         // console.log(e.target.elements);
-        // console.log(e.target.elements.name.value);
-        // console.log(e.target.elements.email.value);
-        // console.log(e.target.elements.city.value);
-        // console.log(e.target.elements.state.value);
         var data, id, name, email, city, state, password, confirm, type;
         id = this.props.auth._id;
         type = this.props.auth.type;
