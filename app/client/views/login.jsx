@@ -9,8 +9,6 @@ export default class Login extends React.Component {
         e.preventDefault();
         // console.log('login submit');
         // console.log(e.target.elements);
-        // console.log(e.target.elements.email.value);
-        // console.log(e.target.elements.password.value);
         var data, email, password;
         email = e.target.elements.email.value;
         password = e.target.elements.password.value;
@@ -38,7 +36,24 @@ export default class Login extends React.Component {
         return (
             <div className='jumbotron' >
                 <div className='page-header'>
-                    <h1>Login</h1>
+                    <h1>Welcome Back</h1>
+                    <h2>Please Log In</h2>
+                </div>
+                <div>
+                    <h2>Social Media</h2>
+                </div>
+                <a href='/auth/twitter'>
+                    <img className='social-icon' src='./public/img/Twitter.png' />
+                </a>
+                <a href='/auth/google'>
+                    <img className='social-icon' src='./public/img/Google+.png' />
+                </a>
+                <a href='/auth/facebook'>
+                    <img className='social-icon' src='./public/img/Facebook.png' />
+                </a>
+                <div className='page-header'></div>
+                <div>
+                    <h2>Local Account</h2>
                 </div>
                 <form onSubmit={this.submit}>
                     {error}
@@ -52,19 +67,6 @@ export default class Login extends React.Component {
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
-                <div className='page-header' >
-                    <h2>Social</h2>
-                </div>
-
-                <a href='/auth/twitter'>
-                    <img className='social-icon' src='./public/img/Twitter.png' />
-                </a>
-                <a href='/auth/google'>
-                    <img className='social-icon' src='./public/img/Google+.png' />
-                </a>
-                <a href='/auth/facebook'>
-                    <img className='social-icon' src='./public/img/Facebook.png' />
-                </a>
             </div>
         )
     }

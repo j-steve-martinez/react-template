@@ -5003,8 +5003,6 @@
 	            e.preventDefault();
 	            // console.log('login submit');
 	            // console.log(e.target.elements);
-	            // console.log(e.target.elements.email.value);
-	            // console.log(e.target.elements.password.value);
 	            var data, email, password;
 	            email = e.target.elements.email.value;
 	            password = e.target.elements.password.value;
@@ -5044,7 +5042,46 @@
 	                    _react2.default.createElement(
 	                        'h1',
 	                        null,
-	                        'Login'
+	                        'Welcome Back'
+	                    ),
+	                    _react2.default.createElement(
+	                        'h2',
+	                        null,
+	                        'Please Log In'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(
+	                        'h2',
+	                        null,
+	                        'Social Media'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: '/auth/twitter' },
+	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Twitter.png' })
+	                ),
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: '/auth/google' },
+	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Google+.png' })
+	                ),
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: '/auth/facebook' },
+	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Facebook.png' })
+	                ),
+	                _react2.default.createElement('div', { className: 'page-header' }),
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(
+	                        'h2',
+	                        null,
+	                        'Local Account'
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -5076,30 +5113,6 @@
 	                        { type: 'submit', className: 'btn btn-primary' },
 	                        'Submit'
 	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'page-header' },
-	                    _react2.default.createElement(
-	                        'h2',
-	                        null,
-	                        'Social'
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'a',
-	                    { href: '/auth/twitter' },
-	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Twitter.png' })
-	                ),
-	                _react2.default.createElement(
-	                    'a',
-	                    { href: '/auth/google' },
-	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Google+.png' })
-	                ),
-	                _react2.default.createElement(
-	                    'a',
-	                    { href: '/auth/facebook' },
-	                    _react2.default.createElement('img', { className: 'social-icon', src: './public/img/Facebook.png' })
 	                )
 	            );
 	        }
@@ -5301,8 +5314,8 @@
 	    _createClass(Start, [{
 	        key: 'render',
 	        value: function render() {
-	            console.log('Start props');
-	            console.log(this.props);
+	            // console.log('Start props');
+	            // console.log(this.props);
 	            var welcome, name;
 	            if (this.props.auth._id !== false) {
 	                this.props.auth.name ? name = this.props.auth.name : name = this.props.auth.email;

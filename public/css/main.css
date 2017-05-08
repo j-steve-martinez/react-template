@@ -8,8 +8,9 @@ a {
   background: #99ccff; }
 
 .social-icon {
-  width: 64px;
-  height: 64px; }
+  width: 32px;
+  height: 32px;
+  padding: 5px; }
 
 #about-body {
   font-size: 21px; }

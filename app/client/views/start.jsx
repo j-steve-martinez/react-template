@@ -6,8 +6,8 @@ export default class Start extends React.Component {
         super(props);
     }
     render() {
-        console.log('Start props');
-        console.log(this.props);
+        // console.log('Start props');
+        // console.log(this.props);
         var welcome, name;
         if (this.props.auth._id !== false) {
             this.props.auth.name ? name = this.props.auth.name : name = this.props.auth.email;
